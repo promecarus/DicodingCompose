@@ -1,5 +1,8 @@
 package com.promecarus.dicodingcompose
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.content.res.Configuration.UI_MODE_TYPE_NORMAL
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,8 +23,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.outlined.ExpandMore
+import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -62,7 +67,13 @@ private val sampleName = listOf(
     "Vincent Ryan Rompies"
 )
 
-@Preview(showBackground = true, device = Devices.PIXEL_4)
+@Preview(device = Devices.PIXEL_4, uiMode = UI_MODE_NIGHT_NO or UI_MODE_TYPE_NORMAL)
+@Preview(device = Devices.PIXEL_4, uiMode = UI_MODE_NIGHT_YES or UI_MODE_TYPE_NORMAL)
+@Composable
+fun DicodingComposeAppPreview() {
+    DicodingComposeApp()
+}
+
 @Composable
 fun DicodingComposeApp() {
     Surface(modifier = Modifier.fillMaxSize(), color = colorScheme.background) {
@@ -85,37 +96,33 @@ fun Greeting(name: String) {
         ), label = ""
     )
 
-    Row(
-        modifier = Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically
+    Card(
+        shape = MaterialTheme.shapes.medium,
+        modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
-        Image(
-            painter = painterResource(R.drawable.jetpack_compose),
-            contentDescription = "Logo Jetpack Compose",
-            modifier = Modifier.size(animatedSizeDp)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = "Hello $name!",
-                fontSize = 24.sp,
-                fontWeight = Bold,
+        Row(
+            modifier = Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(R.drawable.jetpack_compose),
+                contentDescription = "Logo Jetpack Compose",
+                modifier = Modifier.size(animatedSizeDp)
             )
-            Text(text = "Welcome to Dicoding!")
+            Spacer(modifier = Modifier.width(8.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = "Hello $name!",
+                    fontSize = 24.sp,
+                    fontWeight = Bold,
+                )
+                Text(text = "Welcome to Dicoding!")
+            }
+            IconButton(onClick = { isExpanded = !isExpanded }) {
+                Icon(
+                    imageVector = if (isExpanded) Icons.Filled.ExpandLess else Icons.Outlined.ExpandMore,
+                    contentDescription = "Show ${if (isExpanded) "less" else "more"}"
+                )
+            }
         }
-        IconButton(onClick = { isExpanded = !isExpanded }) {
-            Icon(
-                imageVector = if (isExpanded) Icons.Filled.ExpandLess else Icons.Outlined.ExpandMore,
-                contentDescription = "Show ${if (isExpanded) "less" else "more"}"
-            )
-        }
-    }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    DicodingComposeTheme {
-        Greeting("Android")
     }
 }
